@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <input type="text" v-model="school.name"> -->
+    <!-- <h2>{{ school.name }} - {{ school.age }}</h2> -->
+    <!-- <h2>{{ school.age }} <i>{{ school.name }}</i></h2> -->
+    <!-- <input type="text" v-model="name"> -->
+    <!-- <h2>{{ name }}</h2>
+    <h2>{{ age }}</h2>
+    <h3>{{ username }}</h3> -->
+    <!-- <h2>{{school.name}}</h2> -->
+    <h3 v-html="message"></h3>
+    <!-- <button v-on:click="changeName">ChangeName</button> -->
+  </div>
+  <!-- <script src="./node_modules/vue/dist/vue.js"></script> -->
+  <script src="./vue.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        school: {
+          name: '超人学院',
+          age: 18
+        },
+        name: '布罗利',
+        age: 18,
+        message: '<h2>Hello, Brolly!</h2>'
+      },
+      computed: {
+        username() {
+          return this.school.name + ' ' + '我爱你'
+        }
+      },
+      methods: {
+        changeName() {
+          this.school.name = `后长理工学院${this.age++}`
+        }
+      }
+    })
+  </script>
+</body>
+</html>
