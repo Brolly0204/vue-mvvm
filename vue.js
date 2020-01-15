@@ -2,7 +2,6 @@ const compileUtil = {
   getVal(vm, expr) {
     expr = expr.trim()
     const value = expr.split('.').reduce((data, name) => data[name], vm.$data)
-    console.log('value', value)
     return value
   },
   setVal(vm, expr, value) {
@@ -35,7 +34,6 @@ const compileUtil = {
   // v-on
   on(node, expr, vm, eventName) {
     node.addEventListener(eventName, (e) => {
-      console.log(vm[expr])
       vm[expr].call(vm, e)
     })
   },
@@ -126,14 +124,21 @@ class Compiler {
     return name.startsWith('v-')
   }
 
+  isAliasEventName(name) {
+    return name.startsWith('@')
+  }
+
   compileElement(node) {
     const { attributes } = node
     Array.from(attributes).forEach((attr) => {
       const { name, value: expr } = attr
-      if (this.isDirective(name)) {
+      if (this.isDirective(name)) { // 指令v-on v-model
         const [, directive] = name.split('-')
         const [directiveName, eventName] = directive.split(':')
         compileUtil[directiveName](node, expr, this.vm, eventName)
+      } else if (this.isAliasEventName(name)) { // v-on别名@
+        const eventName = name.slice(1)
+        compileUtil.on(node, expr, this.vm, eventName)
       }
     })
   }
